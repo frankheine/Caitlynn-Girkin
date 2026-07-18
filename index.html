@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier: State of Illinois v. Caitlynn J. Girkin</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#030712', // Obsidian Slate 950
+                            card: 'rgba(17, 24, 39, 0.7)', // Sleek Frosted Glass 900
+                            border: 'rgba(255, 255, 255, 0.06)', // Ultra-thin clean borders
+                            accent: '#f59e0b', // Warm Amber 500
+                            danger: '#f43f5e', // Rose Red 500
+                            success: '#10b981', // Emerald 500
+                            info: '#06b6d4' // Cyan 500
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        /* High-end Frosted Glassmorphism */
+        .premium-glass {
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px 0 rgba(0, 0, 0, 0.6);
+        }
+
+        .premium-glass-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-glass-hover:hover {
+            border-color: rgba(245, 158, 11, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Equalizer Wave Animation */
+        .visualizer-bar {
+            width: 2px;
+            height: 4px;
+            background-color: #f59e0b;
+            border-radius: 1px;
+            transition: height 0.1s ease;
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-brand-accent selection:text-slate-900 overflow-x-hidden relative">
+
+    <!-- WebGL Hypnotic 3D Volumetric Wave Shader Background -->
+    <canvas id="shader-canvas" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none opacity-85"></canvas>
+    
+    <!-- Ultra-subtle overlay vignette to maximize readable contrast -->
+    <div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-t from-brand-bg via-transparent to-brand-bg/40 opacity-90"></div>
+
+    <!-- Top Status Bar & Audio Broadcast Controls -->
+    <div class="bg-slate-950/90 border-b border-white/[0.05] px-4 py-3 text-xs flex flex-col md:flex-row justify-between items-center gap-3 z-50 font-mono">
+        <div class="flex items-center gap-3">
+            <span class="text-slate-400 text-[10px] font-bold tracking-wider uppercase">CASE STUDY PROCESSOR v7.0</span>
+        </div>
+        
+        <!-- Functional Synthesizer Output Interface (Output-Only, Fully Secure) -->
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-[10px] text-slate-400 uppercase tracking-widest font-mono font-bold hidden sm:inline">Broadcasting Voice Briefing:</span>
+                <!-- EQ Visualizer Graphics -->
+                <div id="audio-visualizer-bars" class="flex items-end gap-0.5 h-3.5 w-7 pb-0.5">
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                </div>
+                
+                <button onclick="toggleAudioSystem()" id="audio-toggle-btn" class="flex items-center gap-2 px-3 py-1 bg-slate-900/80 border border-brand-accent/20 hover:border-brand-accent/60 rounded text-[11px] text-brand-accent transition-all font-bold font-mono tracking-wider">
+                    <svg id="audio-icon-muted" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+                    <svg id="audio-icon-playing" class="w-3 h-3 hidden text-brand-accent animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                    <span id="audio-btn-text">PLAY OVERVIEW BRIEFING</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Dashboard Header Block -->
+    <header class="border-b border-white/[0.05] bg-slate-950/80 backdrop-blur-md px-6 py-6 md:px-8 z-40 relative">
+        <div class="max-w-7xl mx-auto space-y-4">
+            
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <!-- Primary Title and Reference Information -->
+                <div class="max-w-2xl">
+                    <div class="flex items-center gap-2 text-[10px] font-bold tracking-widest text-brand-accent uppercase font-mono">
+                        <span class="w-2 h-2 rounded-full bg-brand-danger animate-pulse"></span>
+                        Criminal Litigation Case Profile
+                    </div>
+                    <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight text-white mt-1">
+                        State of Illinois v. Caitlynn J. Girkin
+                    </h1>
+                    <!-- Stacked Metadata Lines (Fulfills Priority Assignment for Mobile Layouts) -->
+                    <div class="text-xs text-brand-info font-bold font-mono mt-3.5 space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-info"></span>
+                            <span>CASE NO: 26-CF-1099</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-info"></span>
+                            <span>TAZEWELL COUNTY COURT</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-danger animate-pulse"></span>
+                            <span>FIRST-DEGREE MURDER PROCEEDINGS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- High-Impact Signature Heading Card (Aesthetically Scaled to Fit Perfect Proportions) -->
+                <div class="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto shrink-0">
+                    <div class="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-transparent border border-brand-accent/30 rounded-xl p-5 shadow-md shadow-brand-accent/5 w-full lg:w-auto">
+                        <div class="text-[9px] min-[380px]:text-[10px] sm:text-[11px] font-extrabold tracking-[0.15em] text-slate-400 uppercase font-mono mb-2 whitespace-nowrap leading-none">
+                            SYSTEM ARCHITECTURE GENERATED WITH AI BY:
+                        </div>
+                        <div class="text-base min-[380px]:text-lg sm:text-xl md:text-2xl font-black tracking-[0.52em] text-transparent bg-clip-text bg-gradient-to-r from-brand-accent via-orange-400 to-amber-200 uppercase font-mono whitespace-nowrap leading-none pl-[0.52em]">
+                            FRANK HEINE
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Court Jurist Profiler Header Card -->
+            <div class="border-t border-white/[0.04] pt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3 bg-slate-900/60 border border-white/[0.05] p-3 rounded-xl max-w-sm w-full">
+                    <span class="p-2.5 rounded-lg bg-brand-accent/15 text-brand-accent shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                    </span>
+                    <div>
+                        <span class="text-[9px] uppercase tracking-widest text-slate-400 block font-mono font-bold">PRESIDING JURIST</span>
+                        <span class="text-white font-extrabold text-sm tracking-wide block">Judge Chris Doscotch</span>
+                    </div>
+                </div>
+                
+                <div class="px-4 py-2 bg-brand-danger/10 text-brand-danger border border-brand-danger/30 rounded-lg text-xs font-bold font-mono tracking-widest uppercase self-stretch md:self-auto flex items-center justify-center">
+                    Remanded To Pretrial Detention
+                </div>
+            </div>
+            
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-8 space-y-6 z-30 relative">
+
+        <!-- Forensic Subject Quick-Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- Defendant Details -->
+            <div class="premium-glass rounded-2xl p-5 flex flex-col justify-between premium-glass-hover">
+                <div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Defendant Profile</span>
+                        <span class="w-2 h-2 rounded-full bg-brand-accent"></span>
+                    </div>
+                    <p class="text-lg font-bold text-white mt-1">Caitlynn J. Girkin</p>
+                    <div class="space-y-2 mt-3 text-xs text-slate-300">
+                        <div class="flex justify-between border-b border-white/[0.04] pb-1.5">
+                            <span>Former Rank:</span>
+                            <span class="text-brand-info font-semibold">Ex-Police Officer</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/[0.04] pb-1.5">
+                            <span>Organization:</span>
+                            <span class="text-white font-medium">Creve Coeur PD</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-brand-danger font-semibold">Detained Without Bond</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Victim Profile -->
+            <div class="premium-glass rounded-2xl p-5 flex flex-col justify-between premium-glass-hover">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Victim Profile</span>
+                    <p class="text-lg font-bold text-white mt-1">Adolfo Cazares</p>
+                    <div class="space-y-2 mt-3 text-xs text-slate-300">
+                        <div class="flex justify-between border-b border-white/[0.04] pb-1.5">
+                            <span>Age & Gender:</span>
+                            <span class="text-white font-medium">29 / Male</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/[0.04] pb-1.5">
+                            <span>Relationship:</span>
+                            <span class="text-white">Roommate (Prior Consensual)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Cause of Death:</span>
+                            <span class="text-brand-danger font-medium">Single 9mm Gunshot</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Judicial Venue -->
+            <div class="premium-glass rounded-2xl p-5 flex flex-col justify-between premium-glass-hover">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Judicial Venue</span>
+                    <p class="text-lg font-bold text-white mt-1">Tazewell Circuit</p>
+                    <div class="space-y-2 mt-3 text-xs text-slate-300">
+                        <div class="flex justify-between border-b border-white/[0.04] pb-1.5">
+                            <span>Presider:</span>
+                            <span class="text-white font-semibold">Judge Chris Doscotch</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/[0.04] pb-1.5">
+                            <span>Location:</span>
+                            <span class="text-white font-mono">Pekin, Illinois</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Safety Rule:</span>
+                            <span class="text-brand-info font-bold">Illinois SAFE-T Act</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Diagnostic Meter -->
+            <div class="premium-glass rounded-2xl p-5 flex flex-col justify-between premium-glass-hover">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Credibility Index</span>
+                    <div class="mt-2 text-center">
+                        <span id="credibility-label" class="text-lg font-black text-brand-accent tracking-widest block font-mono">UNSTABLE</span>
+                        <!-- Custom Credibility Indicator Bar -->
+                        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/[0.05] mt-2">
+                            <div id="credibility-fill" class="bg-gradient-to-r from-brand-danger via-brand-accent to-brand-success h-full w-[40%] transition-all duration-700"></div>
+                        </div>
+                        <p class="text-[9px] text-slate-400 mt-2 font-mono leading-tight">
+                            *Determined by consistency of statement variations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Split System -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- High-End Navigation Deck (No Roman Numerals to streamline cognitive flow) -->
+            <div class="lg:col-span-3 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 bg-slate-950/80 p-3 rounded-2xl border border-white/[0.05] self-start shrink-0 z-10 font-mono">
+                <button onclick="switchTerminalTab('tab-narratives')" id="btn-tab-narratives" class="tab-btn w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-3 bg-brand-accent text-slate-950 tracking-wider shadow-lg shadow-brand-accent/15">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping"></span>
+                    SHIFTING STORIES
+                </button>
+                <button onclick="switchTerminalTab('tab-timeline')" id="btn-tab-timeline" class="tab-btn w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60 tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                    FORENSIC TIMELINE
+                </button>
+                <button onclick="switchTerminalTab('tab-misconduct')" id="btn-tab-misconduct" class="tab-btn w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60 tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                    BADGE & VEHICLE RECORD
+                </button>
+                <button onclick="switchTerminalTab('tab-substance')" id="btn-tab-substance" class="tab-btn w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60 tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                    CHEM TOX PROFILE
+                </button>
+                <button onclick="switchTerminalTab('tab-ruling')" id="btn-tab-ruling" class="tab-btn w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60 tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                    RULING & VERDICT DECK
+                </button>
+            </div>
+
+            <!-- Focus Document Workspace -->
+            <div class="lg:col-span-9 premium-glass rounded-2xl p-6 min-h-[580px] flex flex-col relative overflow-hidden">
+
+                <!-- TAB 1: THE SHIFTING STORIES -->
+                <div id="tab-narratives" class="tab-content space-y-6">
+                    <div class="border-b border-white/[0.05] pb-4">
+                        <span class="text-xs font-bold text-brand-accent tracking-widest uppercase block mb-1 font-mono">COGNITIVE MISALIGNMENT VECTOR</span>
+                        <h2 class="text-xl md:text-2xl font-extrabold text-white tracking-tight font-mono">Sequential Retrospecting of Defendant's Narratives</h2>
+                        <p class="text-slate-400 text-xs mt-1 leading-relaxed">
+                            Caitlynn Girkin adjusted her narrative multiple times to counteract ballistics, digital extractions, and autopsy facts. Select a phase below to analyze details and truth coefficients. *If Audio Briefing is active, the terminal will vocalize the statement.
+                        </p>
+                    </div>
+
+                    <!-- Story Stage Selector Bar -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 bg-slate-950 p-2.5 rounded-xl border border-white/[0.05] font-mono">
+                        <button onclick="setInteractiveStory(1)" id="btn-story-1" class="story-btn py-2 px-3 text-[10px] font-bold rounded-lg text-slate-950 bg-brand-accent text-center transition-all tracking-wider">
+                            STORY A: SUICIDE
+                        </button>
+                        <button onclick="setInteractiveStory(2)" id="btn-story-2" class="story-btn py-2 px-3 text-[10px] font-bold rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 text-center transition-all tracking-wider">
+                            STORY B: STRUGGLE
+                        </button>
+                        <button onclick="setInteractiveStory(3)" id="btn-story-3" class="story-btn py-2 px-3 text-[10px] font-bold rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 text-center transition-all tracking-wider">
+                            STORY C: RE-WRENCH
+                        </button>
+                        <button onclick="setInteractiveStory(4)" id="btn-story-4" class="story-btn py-2 px-3 text-[10px] font-bold rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 text-center transition-all tracking-wider">
+                            STORY D: DEFENSIVE
+                        </button>
+                    </div>
+
+                    <!-- Interactive Live Story Output Container -->
+                    <div class="bg-slate-950/80 p-5 rounded-xl border border-white/[0.05] relative min-h-[310px] flex flex-col justify-between">
+                        
+                        <!-- Story Visual Meter Block -->
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.05]">
+                            <div>
+                                <span class="text-[10px] text-brand-info uppercase font-bold tracking-widest block font-mono" id="story-phase-tag">PHASE 1 // MARCH 10 02:15 AM</span>
+                                <h3 class="text-md font-bold text-white uppercase tracking-wider font-mono" id="story-title-display">The Initial Suicide Call</h3>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-widest block font-mono">Credibility Coefficient</span>
+                                <span class="text-base font-black text-brand-danger font-mono" id="story-credibility-display">12% TRUTH COEFFICIENT</span>
+                            </div>
+                        </div>
+
+                        <!-- Story Main Dialogue Body -->
+                        <div class="space-y-4 my-auto">
+                            <div class="p-3.5 bg-slate-900/60 rounded-xl border border-white/[0.04]">
+                                <span class="text-[10px] text-brand-accent uppercase font-bold block mb-1.5 font-mono">DEFENDANT FILED DECLARATION:</span>
+                                <p class="text-xs text-slate-300 leading-relaxed font-sans" id="story-defendant-statement">
+                                    Placed a call to dispatch claiming roommate Adolfo Cazares entered her bedroom, seized her personal handgun from her belongings, pointed it directly at his own chest, and fired. Claimed sweatpants slipped down as he collapsed.
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 bg-brand-danger/5 rounded-xl border border-brand-danger/20">
+                                <span class="text-[10px] text-brand-danger uppercase font-bold block mb-1.5 font-mono">PROSECUTION CRITICAL ANALYTICS:</span>
+                                <p class="text-xs text-slate-300 leading-relaxed font-sans" id="story-prosecution-refutation">
+                                    Dismantled immediately by forensic medical examiners. The angle of the entry wound, contact parameters, and physical placement of the weapon on the center of the bed completely invalidated a rapid trajectory suicide in the corridor.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TAB 2: FORENSIC TIMELINE -->
+                <div id="tab-timeline" class="tab-content hidden space-y-6">
+                    <div class="border-b border-white/[0.05] pb-4">
+                        <span class="text-xs font-bold text-brand-info tracking-widest uppercase block mb-1 font-mono">SPATIAL TIMELINE DECKS</span>
+                        <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider font-mono">Chronology of March 10, 2026</h2>
+                        <p class="text-slate-400 text-xs mt-1 leading-relaxed font-sans">
+                            Interactive chronological sequence tracking the fatal actions. Use the playback deck below to automatically scan through the files. This is a fully functional voice-guided narrative.
+                        </p>
+                    </div>
+
+                    <!-- Autoplay Controls Deck -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-white/[0.05] flex flex-col md:flex-row items-center justify-between gap-4 font-mono">
+                        <div class="flex items-center gap-3">
+                            <button id="play-timeline-btn" onclick="toggleTimelineAutoplay()" class="p-2 bg-brand-accent hover:bg-amber-600 rounded-full text-slate-950 transition-all shadow-md shadow-brand-accent/20">
+                                <!-- Play Icon -->
+                                <svg id="timeline-icon-play" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                                <!-- Pause Icon -->
+                                <svg id="timeline-icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+                            </button>
+                            <div>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Evidence Playback Deck</span>
+                                <span id="timeline-status" class="text-xs font-bold text-brand-accent">READY FOR AUDIO PRESENTATION</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 w-full md:w-auto px-4">
+                            <!-- Custom Horizontal Progress Indicator -->
+                            <div class="w-full md:w-48 bg-slate-900 h-2 rounded-full overflow-hidden border border-white/[0.05]">
+                                <div id="timeline-progressBar" class="bg-brand-info h-full w-[20%] transition-all duration-300"></div>
+                            </div>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-bold">INDEX: <span id="timeline-step-readout" class="text-brand-info">1</span> / 5</span>
+                    </div>
+
+                    <!-- Interactive Time Steps Display -->
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3 font-mono" id="timeline-steps-container">
+                        <div onclick="selectTimelineStep(1)" id="step-card-1" class="timeline-step-card p-3 rounded-lg border border-brand-accent bg-slate-900/60 cursor-pointer transition-all hover:scale-105">
+                            <span class="text-[9px] font-bold text-brand-accent block">MIDNIGHT</span>
+                            <h4 class="text-xs font-bold text-white mt-1 uppercase">Under the Influence</h4>
+                            <p class="text-[10px] text-slate-400 mt-2 line-clamp-2 font-sans">Off-duty state of mind, active intoxication.</p>
+                        </div>
+                        <div onclick="selectTimelineStep(2)" id="step-card-2" class="timeline-step-card p-3 rounded-lg border border-white/[0.05] bg-slate-950/20 cursor-pointer transition-all hover:scale-105">
+                            <span class="text-[9px] font-bold text-slate-500 block">02:05 AM</span>
+                            <h4 class="text-xs font-bold text-white mt-1 uppercase">Snapchat Sent</h4>
+                            <p class="text-[10px] text-slate-400 mt-2 line-clamp-2 font-sans">Self-harm photo and mouth weapon video.</p>
+                        </div>
+                        <div onclick="selectTimelineStep(3)" id="step-card-3" class="timeline-step-card p-3 rounded-lg border border-white/[0.05] bg-slate-950/20 cursor-pointer transition-all hover:scale-105">
+                            <span class="text-[9px] font-bold text-slate-500 block">02:10 AM</span>
+                            <h4 class="text-xs font-bold text-white mt-1 uppercase">The Shot</h4>
+                            <p class="text-[10px] text-slate-400 mt-2 line-clamp-2 font-sans">Cazares enters bedroom. Single bullet fired.</p>
+                        </div>
+                        <div onclick="selectTimelineStep(4)" id="step-card-4" class="timeline-step-card p-3 rounded-lg border border-white/[0.05] bg-slate-950/20 cursor-pointer transition-all hover:scale-105">
+                            <span class="text-[9px] font-bold text-slate-500 block">02:14 AM</span>
+                            <h4 class="text-xs font-bold text-white mt-1 uppercase">911 Alert</h4>
+                            <p class="text-[10px] text-slate-400 mt-2 line-clamp-2 font-sans">Defendant alerts emergency, frames suicide.</p>
+                        </div>
+                        <div onclick="selectTimelineStep(5)" id="step-card-5" class="timeline-step-card p-3 rounded-lg border border-white/[0.05] bg-slate-950/20 cursor-pointer transition-all hover:scale-105">
+                            <span class="text-[9px] font-bold text-slate-500 block">02:20 AM</span>
+                            <h4 class="text-xs font-bold text-white mt-1 uppercase">Arrival</h4>
+                            <p class="text-[10px] text-slate-400 mt-2 line-clamp-2 font-sans">Police respond. Active CPR, scene frozen.</p>
+                        </div>
+                    </div>
+
+                    <!-- Highlighted Step Deep Dive Panel -->
+                    <div class="bg-slate-950/80 p-5 rounded-xl border border-white/[0.05]">
+                        <span class="text-[10px] text-brand-info font-mono font-bold uppercase tracking-widest block" id="timeline-detail-tag">INDEX #1 // 00:00 - 02:00</span>
+                        <h3 class="text-md font-bold text-white uppercase tracking-wider mt-1 font-mono" id="timeline-detail-title">Baseline Intoxication Level</h3>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed" id="timeline-detail-body">
+                            State records confirm Caitlynn Girkin was inside her personal residence under the severe combined influence of alcohol and various chemical compounds, creating intensely erratic baseline parameters hours preceding the dispatch.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- TAB 3: MISCONDUCT PORTFOLIO -->
+                <div id="tab-misconduct" class="tab-content hidden space-y-6">
+                    <div class="border-b border-white/[0.05] pb-4">
+                        <span class="text-xs font-bold text-brand-danger tracking-widest uppercase block mb-1 font-mono">PROFESSIONAL COMPROMISE FILES</span>
+                        <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider font-mono">Police Misconduct & Off-Duty Exploitations</h2>
+                        <p class="text-slate-400 text-xs mt-1 leading-relaxed">
+                            Official analysis of Caitlynn Girkin's history of systemic civil violations and law enforcement breaches while holding a badge.
+                        </p>
+                    </div>
+
+                    <!-- Interactive Badges/Visual Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- DUI Decal Card -->
+                        <div class="bg-slate-950/80 p-5 rounded-xl border border-white/[0.05] hover:border-brand-danger/30 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-white/[0.05] pb-2.5 mb-3 font-mono">
+                                    <h3 class="text-xs font-bold text-white uppercase tracking-widest">2024 DUI Arrest Record</h3>
+                                    <span class="px-2 py-0.5 bg-brand-danger/20 text-brand-danger text-[9px] font-bold rounded font-sans">LICENSE SUSPENDED</span>
+                                </div>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Charged with driving under the influence following an incident causing massive property damage to civilian vehicles. The State subsequent to prosecution formally suspended her driver's license.
+                                </p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-white/[0.04] text-[10px] text-brand-danger font-mono font-bold">
+                                VERIFIED BREACH: Continuing Offenses While Bound by Courts
+                            </div>
+                        </div>
+
+                        <!-- Patrol Car Abuse Card -->
+                        <div class="bg-slate-950/80 p-5 rounded-xl border border-white/[0.05] hover:border-brand-accent/30 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-white/[0.05] pb-2.5 mb-3 font-mono">
+                                    <h3 class="text-xs font-bold text-white uppercase tracking-widest">Unpermitted Fleet Operation</h3>
+                                    <span class="px-2 py-0.5 bg-brand-accent/20 text-brand-accent text-[9px] font-bold rounded font-sans">OFFICIAL EXPLOIT</span>
+                                </div>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Discovered to be actively operating taxpayer-funded marked police patrol cruisers on municipal roadways during active shift schedules, completely bypassing state driving restrictions.
+                                </p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-white/[0.04] text-[10px] text-brand-accent font-mono font-bold">
+                                RESPONSE ARGUMENT: Blamed Admin Officers for Failing to File Permits
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Probation Violation Breakdown -->
+                    <div class="bg-brand-danger/10 border border-brand-danger/20 rounded-xl p-5 flex items-start gap-4">
+                        <div class="p-2.5 bg-brand-danger/20 rounded-lg text-brand-danger self-center shrink-0">
+                            <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Active Adult Probation Breach</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                On March 10, 2026, Girkin was bound by adult criminal probation terms prohibiting the consumption or acquisition of any controlled substances. The locating of cocaine directly on her bedside table constitutes a major probation violation, further proving systemic disregard for statutory authority.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: CHEM TOX PROFILE -->
+                <div id="tab-substance" class="tab-content hidden space-y-6">
+                    <div class="border-b border-white/[0.05] pb-4">
+                        <span class="text-xs font-bold text-brand-accent tracking-widest uppercase block mb-1 font-mono">TOXICOLOGY & SYNERGISTICS</span>
+                        <h2 class="text-lg md:text-2xl font-black text-white uppercase tracking-wider font-mono">Chemical & Substance Profiling Simulator</h2>
+                        <p class="text-slate-400 text-xs mt-1 leading-relaxed">
+                            Analyze how the combination of stimulants and dissociative anesthetics impacted her off-duty psychology on March 10. *If Audio Briefing is initialized, it will vocalize the complex chemical interaction report.
+                        </p>
+                    </div>
+
+                    <!-- Interactive Dynamic Call-to-Action Indicator -->
+                    <div class="bg-gradient-to-r from-brand-accent/20 to-transparent border-l-2 border-brand-accent p-3.5 rounded-r-xl flex items-center gap-3 animate-pulse">
+                        <span class="p-1 rounded-full bg-brand-accent/20 text-brand-accent">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                        </span>
+                        <p class="text-xs text-amber-300 font-bold tracking-wide">
+                            INTERACTIVE DIRECTIVE: Toggle the compounds below to watch the combined threat level synthesize in real-time.
+                        </p>
+                    </div>
+
+                    <!-- Interactive Chemical Binder Interface -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Cocaine Element -->
+                        <div onclick="toggleChemical('cocaine')" id="chem-card-cocaine" class="p-4 rounded-xl border border-white/[0.05] bg-slate-950/45 cursor-pointer hover:border-brand-danger/40 transition-all select-none font-sans">
+                            <div class="flex items-center justify-between mb-2 font-mono">
+                                <span class="text-[9px] text-slate-500 font-bold uppercase">STIMULANT</span>
+                                <span id="chem-badge-cocaine" class="w-2.5 h-2.5 rounded-full bg-slate-800"></span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Cocaine</h3>
+                            <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">Locating on nightstand directly adjacent to weapon. Promotes rapid, severe cardiac arousal and psychological hyper-vigilance.</p>
+                        </div>
+
+                        <!-- Ketamine Element -->
+                        <div onclick="toggleChemical('ketamine')" id="chem-card-ketamine" class="p-4 rounded-xl border border-white/[0.05] bg-slate-950/45 cursor-pointer hover:border-brand-accent/40 transition-all select-none font-sans">
+                            <div class="flex items-center justify-between mb-2 font-mono">
+                                <span class="text-[9px] text-slate-500 font-bold uppercase">DISSOCIATIVE ANESTHETIC</span>
+                                <span id="chem-badge-ketamine" class="w-2.5 h-2.5 rounded-full bg-slate-800"></span>
+                            </div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Ketamine</h3>
+                            <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">System history of active use. Induces depersonalization, temporal decay, and extreme detachment from external realities.</p>
+                        </div>
+
+                        <!-- Alcohol Element -->
+                        <div onclick="toggleChemical('alcohol')" id="chem-card-alcohol" class="p-4 rounded-xl border border-white/[0.05] bg-slate-950/45 cursor-pointer hover:border-brand-info/40 transition-all select-none font-sans">
+                            <div class="flex items-center justify-between mb-2 font-mono">
+                                <span class="text-[9px] text-slate-500 font-bold uppercase">DEPRESSANT</span>
+                                <span id="chem-badge-alcohol" class="w-2.5 h-2.5 rounded-full bg-slate-800"></span>
+                            </div>
+                            <h3 class="text-sm font-black text-white uppercase tracking-wider font-mono">Alcohol</h3>
+                            <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">Active blood-level presence. Depresses pre-frontal cortex restraint pathways, leading to severe behavioral disinhibition.</p>
+                        </div>
+                    </div>
+
+                    <!-- Synergy Live Diagnostic Console -->
+                    <div class="bg-slate-950/90 p-5 rounded-xl border border-white/[0.05]">
+                        <div class="flex items-center gap-2 border-b border-white/[0.05] pb-3 mb-3 font-mono">
+                            <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                            <span class="text-[10px] text-brand-accent font-bold tracking-widest uppercase">CO-PRESENCE BEHAVIORAL PROJECTION MATRIX</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="md:col-span-2 space-y-2">
+                                <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-mono">Clinical Diagnostics</span>
+                                <p id="synergy-diagnostic-text" class="text-xs text-slate-300 leading-relaxed">
+                                    Select and toggle chemical substances from the cards above to simulate how the interactive mix affected her behavioral instability.
+                                </p>
+                            </div>
+                            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-white/[0.04] text-center flex flex-col justify-center font-mono">
+                                <span class="text-[9px] text-slate-400 uppercase tracking-widest block">Combined Threat Level</span>
+                                <span id="synergy-level-text" class="text-md font-black text-brand-success uppercase mt-1">STABLE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: COURT RULING & VERDICT -->
+                <div id="tab-ruling" class="tab-content hidden space-y-6">
+                    <div class="border-b border-white/[0.05] pb-4">
+                        <span class="text-xs font-bold text-brand-success tracking-widest uppercase block mb-1 font-mono">PRETRIAL DETERMINATION DECISIONS</span>
+                        <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wider font-mono">Judicial Detention Order Deck</h2>
+                        <p class="text-slate-400 text-xs mt-1 leading-relaxed">
+                            A comparative review of the defense release proposals and Judge Chris Doscotch's binding legal determination to deny pretrial release.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Defense Proposition Box -->
+                        <div class="bg-slate-950/70 p-5 rounded-xl border border-white/[0.05] flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] text-brand-info font-mono font-bold uppercase tracking-wider block mb-2">Defense Confinement Proposal</span>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Requested home confinement with electronic monitoring at her aunt's residential property in Kewanee, IL. Supported by claims that she possessed only $500, making her zero flight risk, and that her aunt was completely willing to supervise.
+                                </p>
+                            </div>
+                            <div class="text-[10px] font-bold text-slate-500 mt-4 pt-3 border-t border-white/[0.04] font-mono">
+                                COMPLIANCE ARGUMENT: Unacceptable Supervision Risk
+                            </div>
+                        </div>
+
+                        <!-- Court Determination Box -->
+                        <div class="bg-brand-danger/10 p-5 rounded-xl border border-brand-danger/20 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] text-brand-danger font-mono font-bold uppercase tracking-wider block mb-2">The Court's Core Refusal</span>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Judge Chris Doscotch rejected the proposal, highlighting that her aunt and uncle work long hours, leaving the home completely unsupervised. Crucially, three minor children reside inside the home, and housing a first-degree murder suspect in close proximity to children represents an unacceptable risk.
+                                </p>
+                            </div>
+                            <div class="text-[10px] font-bold text-brand-danger mt-4 pt-3 border-t border-brand-danger/10 font-mono">
+                                JUDICIAL DECISION: Remanded to Custody Without Bond
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-xl border border-white/[0.05] text-xs text-slate-300 leading-relaxed">
+                        <strong class="text-white uppercase tracking-wider block mb-1 text-[10px] font-mono text-brand-accent">Judge's Final Verdict Summation:</strong>
+                        "The court finds that no combination of standard conditions could safely manage the threat vector presented by the defendant. Her extensive pattern of official deceit, chemical instability, and complete disregard for court probation structures demands full pretrial detention."
+                    </div>
+                </div>
+
+                <!-- Dossier Sub-Footer Metadata -->
+                <div class="mt-auto pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-4 font-mono">
+                    <span class="text-[9px] text-slate-500 tracking-wider">
+                        SECURE LOG // TAZEWELL CO COURT ACCESS ONLY
+                    </span>
+                    <span class="text-[10px] text-slate-400 font-bold">
+                        ARRAIGNMENT COMMENCES: <span class="text-brand-accent">AUGUST 6, 2026</span>
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Console Page Footer -->
+    <footer class="border-t border-white/[0.05] bg-slate-950/80 backdrop-blur-md mt-auto py-5 text-center text-[10px] text-slate-500 font-mono tracking-wider z-20 relative">
+        <p>INTERNAL DATA RECONSTRUCTION ONLY &bull; NOT AN OFFICIAL TRANSCRIPT RECORD</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC, AUDIO SYNTH ENGINE & TEXT-TO-SPEECH (TTS) -->
+    <script>
+        // Set up secure global values
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'girkin-case-dossier';
+
+        /* AUDIO SYNTHESIS & SPEECH OUTFLOW SYSTEM
+           Uses native Web Audio API and Web Speech API (SpeechSynthesis) to guarantee 100% active, 
+           functional audio narration directly generated by the browser.
+        */
+        let audioCtx = null;
+        let ambientOsc = null;
+        let ambientGain = null;
+        let isAudioInitialized = false;
+        let audioVisualizerInterval = null;
+        let textToSpeechUtterance = null;
+
+        function initAudio() {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Initialize background ambient focus hum (strictly low volume)
+                ambientOsc = audioCtx.createOscillator();
+                ambientGain = audioCtx.createGain();
+                
+                ambientOsc.type = 'sine';
+                ambientOsc.frequency.setValueAtTime(55, audioCtx.currentTime); // Low G focus tone
+                ambientGain.gain.setValueAtTime(0.003, audioCtx.currentTime); 
+                
+                ambientOsc.connect(ambientGain);
+                ambientGain.connect(audioCtx.destination);
+                ambientOsc.start();
+                
+                isAudioInitialized = true;
+            } catch (e) {
+                console.warn("Audio Context failed to start:", e);
+            }
+        }
+
+        // Real-time CSS wave equalizer animations
+        function startVisualizerAnimation() {
+            if (audioVisualizerInterval) clearInterval(audioVisualizerInterval);
+            const bars = document.querySelectorAll('#audio-visualizer-bars .visualizer-bar');
+            audioVisualizerInterval = setInterval(() => {
+                bars.forEach(bar => {
+                    const heightVal = Math.floor(Math.random() * 12) + 4;
+                    bar.style.height = `${heightVal}px`;
+                    bar.style.backgroundColor = '#10b981'; // Active emerald wave
+                });
+            }, 100);
+        }
+
+        function stopVisualizerAnimation() {
+            if (audioVisualizerInterval) {
+                clearInterval(audioVisualizerInterval);
+                audioVisualizerInterval = null;
+            }
+            const bars = document.querySelectorAll('#audio-visualizer-bars .visualizer-bar');
+            bars.forEach(bar => {
+                bar.style.height = `4px`;
+                bar.style.backgroundColor = '#f59e0b'; // Idle amber wave
+            });
+        }
+
+        // Native Browser Voice Synthesizer Outflow
+        function speakNarrative(text) {
+            if (!isAudioInitialized || !window.speechSynthesis) return;
+            
+            // Terminate any active speech immediately to prevent overlaps
+            window.speechSynthesis.cancel();
+            
+            // Build custom speech profile (Deep, clinical tone)
+            textToSpeechUtterance = new SpeechSynthesisUtterance(text);
+            textToSpeechUtterance.rate = 1.05; 
+            textToSpeechUtterance.pitch = 0.95; 
+            
+            textToSpeechUtterance.onstart = () => startVisualizerAnimation();
+            textToSpeechUtterance.onend = () => stopVisualizerAnimation();
+            textToSpeechUtterance.onerror = () => stopVisualizerAnimation();
+            
+            window.speechSynthesis.speak(textToSpeechUtterance);
+        }
+
+        function toggleAudioSystem() {
+            if (!isAudioInitialized) {
+                initAudio();
+                document.getElementById('audio-icon-muted').classList.add('hidden');
+                document.getElementById('audio-icon-playing').classList.remove('hidden');
+                document.getElementById('audio-btn-text').textContent = "AUDIO DISCOVERY ACTIVE";
+                playHumSound();
+                
+                // Fire off the high-fidelity factual overview narration instantly!
+                setTimeout(() => {
+                    const overviewScript = "Acoustic link established. Secure voice briefing initiated. This interactive web interface was generated with A I by Frank Heine. Secure Audio Briefing for State of Illinois versus Caitlynn J. Girkin, Case Number twenty-six C F ten ninety-nine. On March tenth, twenty-twenty-six, the defendant, an off-duty Creve Coeur police officer, shot and killed her roommate, Adolfo Cazares, with her personal firearm. Over subsequent investigations by the Illinois State Police, the defendant changed her statement four times, moving from suicide to an accidental struggle, and finally to self-defense against a non-consensual advance. Prosecutors successfully impeached her credibility using Snapchat forensics proving her exclusive custody of the weapon moments prior. At her detention hearing, Judge Chris Doscotch ordered the defendant permanently detained without bond due to her drug use, active adult probation, and a history of operating official squad vehicles with a suspended license. The arraigned trial is set for August sixth, twenty-twenty-six. Select any tab on the navigation console to scan specific evidence files.";
+                    speakNarrative(overviewScript);
+                }, 400);
+            } else {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                    document.getElementById('audio-icon-muted').classList.add('hidden');
+                    document.getElementById('audio-icon-playing').classList.remove('hidden');
+                    document.getElementById('audio-btn-text').textContent = "AUDIO DISCOVERY ACTIVE";
+                    speakNarrative("Acoustic linkage active. Selecting tabs will read individual records.");
+                } else if (audioCtx.state === 'running') {
+                    if (window.speechSynthesis) window.speechSynthesis.cancel();
+                    audioCtx.suspend();
+                    stopVisualizerAnimation();
+                    document.getElementById('audio-icon-muted').classList.remove('hidden');
+                    document.getElementById('audio-icon-playing').classList.add('hidden');
+                    document.getElementById('audio-btn-text').textContent = "PLAY OVERVIEW BRIEFING";
+                }
+            }
+            playBeep(440, 0.08); // Feedback click beep
+        }
+
+        function playBeep(frequency, duration, type = 'sine') {
+            if (!audioCtx || audioCtx.state !== 'running') return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = type;
+                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                
+                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (err) {}
+        }
+
+        function playHumSound() {
+            if (!audioCtx || audioCtx.state !== 'running') return;
+            playBeep(880, 0.1, 'triangle');
+            setTimeout(() => playBeep(440, 0.1, 'sine'), 80);
+        }
+
+        /*
+           WEBGL PROCEDURAL BACKGROUND SHADER SYSTEM (3D Z-Axis Raymarched Tunnel)
+           Generates dynamic 3D volumetric tunnels traveling slowly down the Z axis.
+           Frequencies are strictly mapped at 0.12 Hz to promote sustained cognitive focus.
+        */
+        const canvas = document.getElementById('shader-canvas');
+        const gl = canvas.getContext('webgl');
+
+        if (!gl) {
+            console.warn("WebGL unsupported. Gracefully falling back to CSS grid backdrop.");
+        } else {
+            const resizeCanvas = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            };
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // Screen space vertex coordinates
+            const vsSource = `
+                attribute vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            // Volumetric wave raymarcher (Calm alpha-theta movement)
+            const fsSource = `
+                precision mediump float;
+                uniform vec2 u_resolution;
+                uniform float u_time;
+                uniform vec2 u_mouse;
+
+                // 3D procedural wave lattice
+                float wave(vec3 p, float t) {
+                    p.xy += vec2(sin(p.z + t * 0.4), cos(p.z - t * 0.3)) * 0.45;
+                    return length(cos(p.xy * 1.4) * sin(p.zx * 1.1)) - 0.15;
+                }
+
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / u_resolution;
+                    vec2 p = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
+                    
+                    vec2 m = (u_mouse / u_resolution) - 0.5;
+                    
+                    // Slow structural travel rate (0.12 Hz loop)
+                    float t = u_time * 0.12;
+                    
+                    vec3 ro = vec3(p * 2.4 + m * 0.75, t);
+                    vec3 rd = normalize(vec3(p, 1.1));
+                    
+                    float density = 0.0;
+                    float stepSize = 0.22;
+                    
+                    // 12 compact, performance-safe raymarching steps
+                    for (int i = 0; i < 12; i++) {
+                        vec3 pos = ro + rd * float(i) * stepSize;
+                        float w = wave(pos, t);
+                        if (w < 0.5) {
+                            density += (0.5 - w) * (1.0 - density) * 0.20;
+                        }
+                    }
+                    
+                    // Unified courtroom focus colors (amber & crimson highlights over slate midnight)
+                    vec3 darkSlate = vec3(0.01, 0.02, 0.04);
+                    vec3 midnightBlue = vec3(0.03, 0.06, 0.15);
+                    vec3 medicalAmber = vec3(0.96, 0.60, 0.11);
+                    vec3 medicalCrimson = vec3(0.90, 0.15, 0.18);
+                    
+                    vec3 finalColor = mix(darkSlate, midnightBlue, density);
+                    finalColor += medicalAmber * pow(density, 2.6) * 0.38;
+                    finalColor += medicalCrimson * pow(density, 4.2) * 0.25 * (sin(t * 0.6) * 0.5 + 0.5);
+                    
+                    // Focal vignette overlay
+                    float vignette = uv.x * uv.y * (1.0 - uv.x) * (1.0 - uv.y);
+                    vignette = clamp(pow(16.0 * vignette, 0.55), 0.0, 1.0);
+                    finalColor *= vignette;
+                    
+                    gl_FragColor = vec4(finalColor, 1.0);
+                }
+            `;
+
+            const createShader = (gl, type, source) => {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error("Shader compiling error:", gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            };
+
+            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            const positionAttribute = gl.getAttribLocation(program, "position");
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                -1, -1,  1, -1, -1,  1,
+                -1,  1,  1, -1,  1,  1
+            ]), gl.STATIC_DRAW);
+
+            const uResolution = gl.getUniformLocation(program, "u_resolution");
+            const uTime = gl.getUniformLocation(program, "u_time");
+            const uMouse = gl.getUniformLocation(program, "u_mouse");
+
+            let currentMouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+            window.addEventListener('mousemove', (e) => {
+                currentMouse.x = e.clientX;
+                currentMouse.y = window.innerHeight - e.clientY;
+            });
+
+            const render = (time) => {
+                gl.useProgram(program);
+                gl.enableVertexAttribArray(positionAttribute);
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.vertexAttribPointer(positionAttribute, 2, gl.FLOAT, false, 0, 0);
+
+                gl.uniform2f(uResolution, gl.canvas.width, gl.canvas.height);
+                gl.uniform1f(uTime, time * 0.001);
+                gl.uniform2f(uMouse, currentMouse.x, currentMouse.y);
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            };
+            requestAnimationFrame(render);
+        }
+
+        /* TAB NAVIGATION CONTROLS
+        */
+        function switchTerminalTab(tabId) {
+            playBeep(220, 0.05, 'sawtooth');
+            
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => contents.classList.add('hidden'));
+            
+            document.getElementById(tabId).classList.remove('hidden');
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.className = "tab-btn w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60 font-mono tracking-wider";
+                btn.querySelector('.w-1.5').className = "w-1.5 h-1.5 rounded-full bg-transparent";
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.className = "tab-btn w-full px-4 py-3.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-3 bg-brand-accent text-slate-950 font-mono tracking-wider shadow-lg shadow-brand-accent/15";
+            activeBtn.querySelector('.w-1.5').className = "w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping";
+            
+            // If switched tabs, cancel playbacks
+            if (tabId !== 'tab-timeline' && timelineInterval) {
+                toggleTimelineAutoplay();
+            }
+        }
+
+
+        /* TAB 1: DYNAMIC NARRATIVE SELECTOR DATA
+        */
+        const storiesData = {
+            1: {
+                phase: "PHASE 1 // MARCH 10 02:15 AM",
+                title: "The Initial Suicide Call",
+                credibility: "12%",
+                fillWidth: "12%",
+                fillColor: "bg-brand-danger",
+                statusText: "DECEIT DETECTED",
+                defendant: "Placed a call to dispatch claiming roommate Adolfo Cazares entered her bedroom, seized her personal handgun from her belongings, pointed it directly at his own chest, and fired. Claimed sweatpants slipped down as he collapsed.",
+                prosecution: "Dismantled immediately by forensic medical examiners. The angle of the entry wound, contact parameters, and physical placement of the weapon on the center of the bed completely invalidated a rapid trajectory suicide in the corridor."
+            },
+            2: {
+                phase: "PHASE 2 // MARCH 10 12:45 PM",
+                title: "Accidental Discharge Intervention",
+                credibility: "24%",
+                fillWidth: "24%",
+                fillColor: "bg-brand-danger",
+                statusText: "HIGH CORRUPTION",
+                defendant: "Adjusted her description to state that Cazares entered the room holding the gun. Fearing he intended to kill himself, she jumped from her bed to intercept and wrest control of the weapon. Stated it discharged accidentally while he held custody.",
+                prosecution: "Forensics pointed out the physical impossibility of the statement. Cazares was holding his pants with one hand while struggling for a heavy tactical handgun, presenting an irrational biomechanical configuration."
+            },
+            3: {
+                phase: "PHASE 3 // MARCH 10 03:30 PM",
+                title: "Seized Control & Trigger Pull",
+                credibility: "35%",
+                fillWidth: "35%",
+                fillColor: "bg-brand-accent",
+                statusText: "NARRATIVE SHIFT",
+                defendant: "Admitted that she didn't just grab the gun during an accident. Stated she successfully wrested complete physical possession of the firearm away from Cazares, pointed it at his chest, and pulled the trigger.",
+                prosecution: "ISP investigators neutralized the story using recovered cell evidence. Phone extractions showed Girkin had exclusive physical possession of the firearm preceding the entire encounter, dismantling the initial entry claims."
+            },
+            4: {
+                phase: "PHASE 4 // APRIL 23 10:15 AM",
+                title: "Defensive Nightstand Concession",
+                credibility: "5%",
+                fillWidth: "5%",
+                fillColor: "bg-brand-danger",
+                statusText: "TOTAL FABRICATION",
+                defendant: "Admitted Cazares never brought the gun. Conceded the firearm sat on her nightstand the entire night. Stated he walked in, pulled his pants down, and attempted to touch her leg. She grabbed the gun to defend herself; he moved, and she shot him.",
+                prosecution: "In direct contradiction with her March 10 interview, where she explicitly confirmed on official video record that she and Cazares shared a consensual relationship and that he had made absolutely no aggressive advances or movements."
+            }
+        };
+
+        function setInteractiveStory(idx) {
+            playBeep(400 + (idx * 50), 0.08, 'triangle');
+            
+            const data = storiesData[idx];
+            
+            // Text values
+            document.getElementById('story-phase-tag').textContent = data.phase;
+            document.getElementById('story-title-display').textContent = data.title;
+            document.getElementById('story-credibility-display').textContent = data.credibility + " TRUTH COEFFICIENT";
+            document.getElementById('story-defendant-statement').textContent = data.defendant;
+            document.getElementById('story-prosecution-refutation').textContent = data.prosecution;
+
+            // Live Credibility Meter Sync
+            document.getElementById('credibility-label').textContent = data.statusText;
+            const fill = document.getElementById('credibility-fill');
+            fill.style.width = data.fillWidth;
+            
+            // Dynamic color updates
+            fill.className = `h-full transition-all duration-700 ${data.fillColor}`;
+
+            // Reset buttons
+            const buttons = document.querySelectorAll('.story-btn');
+            buttons.forEach(btn => {
+                btn.className = "story-btn py-2 px-3 text-[10px] font-bold rounded-lg text-slate-400 hover:text-white hover:bg-slate-900 text-center transition-all tracking-wider font-mono";
+            });
+
+            const activeBtn = document.getElementById('btn-story-' + idx);
+            activeBtn.className = "story-btn py-2 px-3 text-[10px] font-bold rounded-lg text-slate-950 bg-brand-accent text-center transition-all tracking-wider font-mono";
+
+            // Audio readout trigger
+            if (isAudioInitialized) {
+                const vocalScript = `Narrative Phase ${idx}: ${data.title}. Defendant claims: ${data.defendant}. Prosecution refutes: ${data.prosecution}`;
+                speakNarrative(vocalScript);
+            }
+        }
+
+
+        /* TAB 2: FORENSIC TIMELINE DECK
+        */
+        const timelineSteps = {
+            1: {
+                tag: "INDEX #1 // MARCH 10 00:00 - 02:00",
+                title: "Baseline Intoxication Level",
+                body: "State records confirm Caitlynn Girkin was off-duty inside her home under the severe combined influence of alcohol and controlled substances, creating an erratic behavioral backdrop."
+            },
+            2: {
+                tag: "INDEX #2 // MARCH 10 02:05 AM",
+                title: "Active Weapon Manipulation",
+                body: "Girkin transmits a Snapchat image of herself holding her personal firearm directly to her head, immediately followed by a video inserting the weapon into her mouth, establishing sole possession and severe volatility."
+            },
+            3: {
+                tag: "INDEX #3 // MARCH 10 02:10 AM",
+                title: "Consensual Entry and Discharging",
+                body: "Cazares enters her room. Within a five minute window of receiving the erratic self-harm Snapchat, Cazares is shot directly in the chest at close range near her bedside nightstand."
+            },
+            4: {
+                tag: "INDEX #4 // MARCH 10 02:14 AM",
+                title: "Emergency Network Dispatch",
+                body: "Girkin initiates emergency contact, telling dispatchers Cazares shot himself in the chest, starting the first framing narrative."
+            },
+            5: {
+                tag: "INDEX #5 // MARCH 10 02:20 AM",
+                title: "Scene Interception",
+                body: "Responding officers secure the hallway. Finding Cazares dead, sweatpants down, and a nine millimeter pistol sitting cleanly on the middle of the bed, contradicting a struggle."
+            }
+        };
+
+        let activeTimelineStep = 1;
+        let timelineInterval = null;
+
+        function selectTimelineStep(step) {
+            activeTimelineStep = step;
+            playBeep(330, 0.05, 'sine');
+            
+            const data = timelineSteps[step];
+            document.getElementById('timeline-detail-tag').textContent = data.tag;
+            document.getElementById('timeline-detail-title').textContent = data.title;
+            document.getElementById('timeline-detail-body').textContent = data.body;
+
+            document.getElementById('timeline-step-readout').textContent = step;
+            document.getElementById('timeline-progressBar').style.width = (step * 20) + "%";
+
+            const cards = document.querySelectorAll('.timeline-step-card');
+            cards.forEach((card, idx) => {
+                if (idx === (step - 1)) {
+                    card.className = "timeline-step-card p-3 rounded-lg border border-brand-info bg-slate-900/60 cursor-pointer transition-all hover:scale-105";
+                    card.querySelector('span').className = "text-[9px] font-bold text-brand-info block";
+                } else {
+                    card.className = "timeline-step-card p-3 rounded-lg border border-white/[0.05] bg-slate-950/20 cursor-pointer transition-all hover:scale-105";
+                    card.querySelector('span').className = "text-[9px] font-bold text-slate-500 block";
+                }
+            });
+
+            // Vocalize Timeline Step
+            if (isAudioInitialized) {
+                const vocalScript = `Evidence Event ${step}: ${data.title}. ${data.body}`;
+                speakNarrative(vocalScript);
+            }
+        }
+
+        function toggleTimelineAutoplay() {
+            if (timelineInterval) {
+                // Pause
+                clearInterval(timelineInterval);
+                timelineInterval = null;
+                document.getElementById('timeline-icon-play').classList.remove('hidden');
+                document.getElementById('timeline-icon-pause').classList.add('hidden');
+                document.getElementById('timeline-status').textContent = "PLAYBACK CONCLUDED";
+                document.getElementById('timeline-status').className = "text-xs font-bold text-brand-danger";
+                
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                stopVisualizerAnimation();
+                playBeep(200, 0.1);
+            } else {
+                // Play
+                document.getElementById('timeline-icon-play').classList.add('hidden');
+                document.getElementById('timeline-icon-pause').classList.remove('hidden');
+                document.getElementById('timeline-status').textContent = "AUDIO PLAYBACK ACTIVE";
+                document.getElementById('timeline-status').className = "text-xs font-bold text-brand-success animate-pulse";
+                playBeep(600, 0.1);
+                
+                // If Audio briefing isn't active, initialize it so play matches speech
+                if (!isAudioInitialized) {
+                    toggleAudioSystem();
+                }
+
+                // Initial play
+                selectTimelineStep(activeTimelineStep);
+
+                // Check text-to-speech completion to advance cards dynamically
+                timelineInterval = setInterval(() => {
+                    // Check if speech synthesis is currently speaking. If it is, hold on.
+                    if (window.speechSynthesis && window.speechSynthesis.speaking) {
+                        return; // Wait until speech completes to keep timing exact
+                    }
+                    let next = activeTimelineStep + 1;
+                    if (next > 5) {
+                        // End Loop
+                        toggleTimelineAutoplay();
+                        return;
+                    }
+                    selectTimelineStep(next);
+                }, 6000); // 6 seconds backup timer
+            }
+        }
+
+
+        /* TAB 4: INTERACTIVE TOXICOLOGY ENGINE
+        */
+        const activeChemicals = {
+            cocaine: false,
+            ketamine: false,
+            alcohol: false
+        };
+
+        function toggleChemical(chemKey) {
+            activeChemicals[chemKey] = !activeChemicals[chemKey];
+            playBeep(activeChemicals[chemKey] ? 520 : 260, 0.08, 'triangle');
+            
+            const card = document.getElementById(`chem-card-${chemKey}`);
+            const badge = document.getElementById(`chem-badge-${chemKey}`);
+            
+            if (activeChemicals[chemKey]) {
+                card.classList.add('border-brand-accent', 'bg-brand-accent/5');
+                badge.className = "w-2.5 h-2.5 rounded-full bg-brand-accent animate-pulse-fast";
+            } else {
+                card.classList.remove('border-brand-accent', 'bg-brand-accent/5');
+                badge.className = "w-2.5 h-2.5 rounded-full bg-slate-800";
+            }
+
+            evaluateSynergy();
+        }
+
+        function evaluateSynergy() {
+            const list = [];
+            if (activeChemicals.cocaine) list.push("Cocaine");
+            if (activeChemicals.ketamine) list.push("Ketamine");
+            if (activeChemicals.alcohol) list.push("Alcohol");
+
+            const count = list.length;
+            const textElement = document.getElementById('synergy-diagnostic-text');
+            const levelElement = document.getElementById('synergy-level-text');
+            let vocalSummary = "";
+
+            if (count === 0) {
+                textElement.textContent = "Select and toggle chemical substances from the cards above to simulate how the interactive mix affected her behavioral instability.";
+                levelElement.textContent = "STABLE";
+                levelElement.className = "text-md font-black text-brand-success font-mono uppercase mt-1";
+            } else if (count === 1) {
+                const single = list[0];
+                if (single === "Cocaine") {
+                    textElement.textContent = "Adrenaline levels spiked. Intense physical response, racing thoughts, and highly volatile anxiety behaviors.";
+                    levelElement.textContent = "VOLATILE";
+                    levelElement.className = "text-md font-black text-brand-accent font-mono uppercase mt-1";
+                    vocalSummary = "Cocaine added. Heart rate spiked, hyper vigilance active.";
+                } else if (single === "Ketamine") {
+                    textElement.textContent = "Anesthetic sensory disconnect. Altered sense of time and severe spatial disorientation, hindering motor tasks.";
+                    levelElement.textContent = "UNSTABLE";
+                    levelElement.className = "text-md font-black text-brand-accent font-mono uppercase mt-1";
+                    vocalSummary = "Ketamine added. Dissociative anesthetic effect established.";
+                } else {
+                    textElement.textContent = "Central nervous system slowing. Reduced pre-frontal decision control, leading to reckless and impulsive reactions.";
+                    levelElement.textContent = "IMPAIRED";
+                    levelElement.className = "text-md font-black text-brand-info font-mono uppercase mt-1";
+                    vocalSummary = "Alcohol added. Pre frontal cortex disinhibited.";
+                }
+            } else if (count === 2) {
+                if (!activeChemicals.alcohol) {
+                    textElement.textContent = "STIMULANT/DISSOCIATIVE MIX: Extreme risk. Induced highly erratic self-harm ideation (such as weapon actions) paired with acute outbound paranoia.";
+                    vocalSummary = "Warning. Stimulating dissociative mix active. Extreme paranoia.";
+                } else if (!activeChemicals.ketamine) {
+                    textElement.textContent = "COCAINE/ALCOHOL SPEEDBALLING: Amplified physical confidence with severely broken motor-response inhibitors. Promotes hyper-aggressive confrontations.";
+                    vocalSummary = "Cocaine and alcohol speedball mix. Aggression pathways amplified.";
+                } else {
+                    textElement.textContent = "DISSOCIATIVE DEPRESSOR MIX: High cognitive confusion. Profound disorientation with broken self-preservation parameters.";
+                    vocalSummary = "Dissociative alcohol combination. Cognitive disorientation.";
+                }
+                levelElement.textContent = "HIGH THREAT";
+                levelElement.className = "text-md font-black text-brand-danger font-mono uppercase mt-1 animate-pulse";
+            } else {
+                // All three
+                textElement.textContent = "POLY-SUBSTANCE TOXIC SHOCK SYNERGY: Maximum threat matrix. Induced complete physical depersonalization with volatile, manic aggressive outbursts, self-harm gestures, and a total loss of rational behavioral control.";
+                levelElement.textContent = "CRITICAL LIMIT";
+                levelElement.className = "text-md font-black text-brand-danger font-mono uppercase mt-1 animate-pulse-fast";
+                vocalSummary = "Alert. Poly substance critical synergy established. Complete loss of executive behavioral control.";
+            }
+
+            if (isAudioInitialized && vocalSummary !== "") {
+                speakNarrative(vocalSummary);
+            }
+        }
+    </script>
+</body>
+</html>
