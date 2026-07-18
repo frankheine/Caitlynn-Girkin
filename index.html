@@ -942,8 +942,8 @@
                 }
 
                 vec3 palette(float t) {
-                    vec3 a = vec3(0.035, 0.045, 0.075);
-                    vec3 b = vec3(0.45, 0.38, 0.30);
+                    vec3 a = vec3(0.14, 0.12, 0.17);
+                    vec3 b = vec3(0.13, 0.11, 0.15);
                     vec3 c = vec3(1.0, 0.85, 0.65);
                     vec3 d = vec3(0.18, 0.34, 0.52);
                     return a + b * cos(6.28318 * (c * t + d));
@@ -967,7 +967,7 @@
                     float f = fbm(p + r);
 
                     vec3 col = palette(f + t * 0.05);
-                    col *= 0.55;
+                    col *= 0.85;
 
                     float dist = length(uv);
                     float vig = 1.0 - smoothstep(0.15, 1.15, dist);
