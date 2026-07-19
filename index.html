@@ -26,13 +26,41 @@
                             danger: '#f43f5e', // Rose Red
                             success: '#10b981', // Emerald
                             info: '#06b6d4' // Cyan
-                        }
-                    }
+        /* FORCE GLASSMORPHISM ON ALL PANELS TO REVEAL SHADER */
+        .bg-slate-950, .bg-slate-950\/80, .bg-slate-950\/70, .bg-slate-900\/60, .bg-slate-950\/45 {
+            background-color: rgba(10, 15, 30, 0.35) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        }
+        /* Make the top ribbon transparent glass too */
+        .bg-black\/60 {
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px)
+        }
                 }
             }
+        </script>
+    
+        <style>
+        /* FORCE GLASSMORPHISM ON ALL PANELS TO REVEAL SHADER */
+        .bg-slate-950, .bg-slate-950\/80, .bg-slate-950\/70, .bg-slate-900\/60, .bg-slate-950\/45 {
+            background-color: rgba(10, 15, 30, 0.35) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         }
-    </script>
-    <style>
+        
+        /* Make the top ribbon transparent glass too */
+        .bg-black\/60 {
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+        }
+
         /* Natural Document Flow - Allow full-page scrolling */
         html, body {
             margin: 0;
@@ -857,6 +885,12 @@
            - Scroll-linked time evolution (morphs instead of drags to prevent nausea).
            - Magnetic touch/pointer reactivity with localized glow.
            ============================================================ */
+/* ============================================================
+           BIOMETRIC TOPOGRAPHIC DATA GRID
+           - Sharp, forensic contour lines (no tie-dye).
+           - Touch/Mouse acts as a localized amber scanner.
+           - Scroll morphs the Z-axis data (zero motion sickness).
+           ============================================================ */
         (function initShaderBackground() {
             const canvas = document.getElementById('fluid-canvas');
             const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -869,7 +903,6 @@
                 }
             `;
 
-            // The new Liquid Silk Fragment Shader
             const fragmentSrc = `
                 precision highp float;
                 uniform vec2 uResolution;
@@ -877,57 +910,72 @@
                 uniform vec2 uMouse;
                 uniform float uScroll;
 
-                // 2D Rotation Matrix
-                mat2 rot(float a) {
-                    float s = sin(a), c = cos(a);
-                    return mat2(c, -s, s, c);
+                // Hash and Noise for the topographic data
+                float hash(vec2 p) {
+                    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+                }
+                
+                float noise(vec2 p) {
+                    vec2 i = floor(p);
+                    vec2 f = fract(p);
+                    vec2 u = f*f*(3.0-2.0*f);
+                    return mix(mix(hash(i + vec2(0.0,0.0)), hash(i + vec2(1.0,0.0)), u.x),
+                               mix(hash(i + vec2(0.0,1.0)), hash(i + vec2(1.0,1.0)), u.x), u.y);
+                }
+                
+                // Fractal Brownian Motion for complex ridges
+                float fbm(vec2 p) {
+                    float f = 0.0;
+                    float amp = 0.5;
+                    for(int i = 0; i < 4; i++) {
+                        f += amp * noise(p);
+                        p *= 2.0;
+                        amp *= 0.5;
+                    }
+                    return f;
                 }
 
                 void main() {
-                    // Normalize coordinates
                     vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / uResolution.y;
                     
-                    // Invert Y for mouse to match WebGL coordinate space
-                    vec2 mouse = vec2(uMouse.x, uResolution.y - uMouse.y);
-                    vec2 mouseUV = (mouse - 0.5 * uResolution.xy) / uResolution.y;
-
-                    // SCROLL INTERACTION: Scroll drives the evolution of the fluid, not the physical Y-axis.
-                    // This prevents motion sickness while keeping it highly reactive.
-                    float t = (uTime * 0.15) + (uScroll * 0.0015);
-
-                    // TOUCH INTERACTION: Magnetic pull and warp around the finger/cursor
+                    // Invert Y for mouse to match WebGL space
+                    vec2 mouseUV = (vec2(uMouse.x, uResolution.y - uMouse.y) - 0.5 * uResolution.xy) / uResolution.y;
+                    
+                    // SCROLL & TIME: Morph the Z-axis of the data. 
+                    // No vertical panning = no motion sickness.
+                    float z = (uTime * 0.15) + (uScroll * 0.002);
+                    
+                    // Generate the base data field
+                    vec2 p = uv * 4.0;
+                    float n = fbm(p + vec2(z * 0.5, z));
+                    
+                    // Create sharp topographic contour lines (texture/pattern)
+                    float contour = fract(n * 15.0);
+                    float line = smoothstep(0.0, 0.05, contour) - smoothstep(0.05, 0.1, contour);
+                    
+                    // TOUCH/MOUSE INTERACTION: Biometric scanner effect
                     float dist = length(uv - mouseUV);
-                    vec2 pull = normalize(uv - mouseUV) * exp(-dist * 5.0) * 0.08;
-                    uv -= pull;
-
-                    // DOMAIN WARPING: Creates the rich, folding liquid silk texture
-                    vec2 p = uv * 2.5;
-                    for(float i = 1.0; i < 6.0; i++) {
-                        p *= rot(t * 0.04);
-                        p.x += 0.6 / i * cos(i * 2.5 * p.y + t);
-                        p.y += 0.6 / i * cos(i * 1.5 * p.x + t);
-                    }
-
-                    // Generate pattern intensity based on the folds
-                    float pattern = sin(p.x + p.y);
-
-                    // BRAND COLORS
-                    vec3 bg = vec3(0.01, 0.02, 0.05);     // Deep Obsidian
-                    vec3 cyan = vec3(0.02, 0.71, 0.83);   // Brand Info
-                    vec3 amber = vec3(0.96, 0.62, 0.04);  // Brand Accent
-                    vec3 rose = vec3(0.95, 0.25, 0.36);   // Brand Danger
-
-                    // Mix colors based on the fluid ridges
-                    vec3 col = mix(bg, cyan, smoothstep(-1.0, 1.0, pattern) * 0.5);
-                    col = mix(col, amber, smoothstep(0.2, 1.0, sin(p.x * 2.0)) * 0.35);
-                    col = mix(col, rose, smoothstep(0.5, 1.0, cos(p.y * 2.0)) * 0.25);
-
-                    // Add localized glow at the touch point
-                    col += amber * exp(-dist * 6.0) * 0.5;
-
-                    // Vignette to keep the edges dark and focus text readability
-                    col *= 1.0 - smoothstep(0.4, 2.0, length(uv));
-
+                    float scanner = exp(-dist * 6.0); // Tight, intense glow radius
+                    
+                    // COLORS: Dark Forensic Theme
+                    vec3 bg = vec3(0.01, 0.02, 0.04); // Deep Obsidian
+                    vec3 baseLine = vec3(0.02, 0.3, 0.4); // Dim, stealthy Cyan for resting lines
+                    vec3 activeLine = vec3(0.96, 0.62, 0.04); // Bright Amber for scanned lines
+                    
+                    vec3 col = bg;
+                    
+                    // Draw the resting grid
+                    col += baseLine * line * 0.4;
+                    
+                    // Draw the interactive scanner glow (ignites the lines)
+                    col += activeLine * line * scanner * 2.5;
+                    
+                    // Add a very faint ambient glow around the cursor
+                    col += activeLine * scanner * 0.08;
+                    
+                    // Vignette to keep edges pitch black
+                    col *= 1.0 - smoothstep(0.4, 1.5, length(uv));
+                    
                     gl_FragColor = vec4(col, 1.0);
                 }
             `;
@@ -962,7 +1010,6 @@
             let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
             let targetMouseX = mouseX, targetMouseY = mouseY;
             
-            // Scroll tracking variables
             let targetScroll = window.scrollY;
             let currentScroll = targetScroll;
 
@@ -974,7 +1021,6 @@
             window.addEventListener('resize', resize);
             resize();
 
-            // Track Mouse / Touch
             window.addEventListener('mousemove', (e) => {
                 targetMouseX = e.clientX * dpr;
                 targetMouseY = e.clientY * dpr;
@@ -986,7 +1032,6 @@
                 }
             }, { passive: true });
 
-            // Track Scroll
             window.addEventListener('scroll', () => {
                 targetScroll = window.scrollY;
             }, { passive: true });
@@ -994,9 +1039,9 @@
             let startTime = performance.now();
 
             function render(now) {
-                // Smoothly interpolate mouse and scroll for buttery fluid reactions
-                mouseX += (targetMouseX - mouseX) * 0.05;
-                mouseY += (targetMouseY - mouseY) * 0.05;
+                // Smooth interpolation for the scanner and scroll morphing
+                mouseX += (targetMouseX - mouseX) * 0.1;
+                mouseY += (targetMouseY - mouseY) * 0.1;
                 currentScroll += (targetScroll - currentScroll) * 0.08;
 
                 gl.uniform2f(uResolution, canvas.width, canvas.height);
