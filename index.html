@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -90,28 +91,29 @@
 
     <!-- Top Action Ribbon -->
     <div class="bg-black/60 border-b border-white/[0.04] px-4 py-2.5 text-xs flex flex-row justify-between items-center gap-3 z-50 font-mono shrink-0">
-        <div class="flex items-center gap-2 text-[10px] text-slate-400 font-bold tracking-wider uppercase">
-            <span class="w-2 h-2 rounded-full bg-brand-accent animate-ping"></span>
-            <span>INTERACTIVE CASE FILE</span>
+        <div class="flex items-center gap-3">
+            <!-- Emptied content on request to clean the top action bar -->
         </div>
         
         <!-- Active Voice Broadcaster Controls -->
-        <div class="flex items-center gap-3">
-            <span class="text-[10px] text-slate-400 uppercase tracking-widest font-mono font-bold hidden sm:inline">Voice Briefing:</span>
-            <!-- EQ Graphics -->
-            <div id="audio-visualizer-bars" class="flex items-end gap-[2px] h-3.5 w-7 pb-0.5">
-                <div class="visualizer-bar"></div>
-                <div class="visualizer-bar"></div>
-                <div class="visualizer-bar"></div>
-                <div class="visualizer-bar"></div>
-                <div class="visualizer-bar"></div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-[10px] text-slate-400 uppercase tracking-widest font-mono font-bold hidden sm:inline">Broadcasting Voice Briefing:</span>
+                <!-- EQ Graphics -->
+                <div id="audio-visualizer-bars" class="flex items-end gap-[2px] h-3.5 w-7 pb-0.5">
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                </div>
+                
+                <button onclick="toggleAudioSystem()" id="audio-toggle-btn" class="flex items-center gap-2 px-3 py-1 bg-slate-900/80 border border-brand-accent/20 hover:border-brand-accent/60 rounded text-[11px] text-brand-accent transition-all font-bold font-mono tracking-wider hover:bg-brand-accent hover:text-black">
+                    <svg id="audio-icon-muted" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+                    <svg id="audio-icon-playing" class="w-3 h-3 hidden text-brand-accent animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 5.000 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                    <span id="audio-btn-text">PLAY BRIEFING</span>
+                </button>
             </div>
-            
-            <button onclick="toggleAudioSystem()" id="audio-toggle-btn" class="flex items-center gap-2 px-3 py-1 bg-slate-900/80 border border-brand-accent/30 hover:border-brand-accent rounded text-[11px] text-brand-accent transition-all font-bold font-mono tracking-wider hover:bg-brand-accent hover:text-black">
-                <svg id="audio-icon-muted" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
-                <svg id="audio-icon-playing" class="w-3 h-3 hidden text-brand-accent animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 5.000 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
-                <span id="audio-btn-text">PLAY BRIEFING</span>
-            </button>
         </div>
     </div>
 
@@ -198,7 +200,7 @@
                 <span class="animate-pulse">👉</span>
             </div>
 
-            <!-- Navigation Tabs (Exposes 2.5 tabs peeking horizontally on mobile) -->
+            <!-- Navigation Tabs -->
             <nav class="flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-2 pb-2 lg:pb-0 font-mono no-scrollbar w-full">
                 <button onclick="switchTerminalTab('tab-narratives')" id="btn-tab-narratives" class="tab-btn w-[38vw] min-w-[135px] max-w-[160px] lg:w-full shrink-0 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-2 bg-brand-accent text-slate-950 tracking-wider shadow-lg shadow-brand-accent/15">
                     <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping"></span>
@@ -211,6 +213,10 @@
                 <button onclick="switchTerminalTab('tab-misconduct')" id="btn-tab-misconduct" class="tab-btn w-[38vw] min-w-[135px] max-w-[160px] lg:w-full shrink-0 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900/60 tracking-wider">
                     <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
                     MISCONDUCT RECORD
+                </button>
+                <button onclick="switchTerminalTab('tab-substance')" id="btn-tab-substance" class="tab-btn w-[38vw] min-w-[135px] max-w-[160px] lg:w-full shrink-0 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900/60 tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+                    CHEM TOX PROFILE
                 </button>
                 <button onclick="switchTerminalTab('tab-ruling')" id="btn-tab-ruling" class="tab-btn w-[38vw] min-w-[135px] max-w-[160px] lg:w-full shrink-0 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-900/60 tracking-wider">
                     <span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
@@ -416,13 +422,91 @@
                     <div class="space-y-1">
                         <h4 class="text-sm font-bold text-white uppercase tracking-wider font-mono font-sans">Active Adult Probation Breach</h4>
                         <p class="text-xs text-slate-300 leading-relaxed">
-                            On March 10, 2026, Girkin was bound by adult criminal probation terms prohibiting the consumption or acquisition of any controlled substances, establishing systemic disregard for statutory authority.
+                            On March 10, 2026, Girkin was bound by adult criminal probation terms prohibiting the consumption or acquisition of any controlled substances. The locating of cocaine directly on her bedside table constitutes a major probation violation, further proving systemic disregard for statutory authority.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 4: COURT RULING & VERDICT -->
+            <!-- TAB 4: CHEM TOX PROFILE -->
+            <div id="tab-substance" class="tab-content hidden space-y-4 flex-col h-full">
+                <div class="border-b border-white/[0.05] pb-3 shrink-0 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div>
+                        <span class="text-[10px] font-bold text-brand-accent tracking-widest uppercase block mb-0.5 font-mono">TOXICOLOGY & SYNERGISTICS</span>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-white">Chemical & Substance Profiling Simulator</h2>
+                    </div>
+                </div>
+                <p class="text-slate-400 text-xs leading-relaxed -mt-2">
+                    Analyze how the combination of stimulants and dissociative anesthetics impacted her off-duty psychology on March 10.
+                </p>
+
+                <!-- Interactive Call-to-Action Indicator with Toggle Audio Play Button -->
+                <div class="bg-gradient-to-r from-brand-accent/20 to-transparent border-l-2 border-brand-accent p-3.5 rounded-r-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-pulse shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span class="p-1 rounded-full bg-brand-accent/20 text-brand-accent shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                        </span>
+                        <p class="text-[11px] sm:text-xs text-amber-300 font-black tracking-wide">
+                            CLICK THE SUBSTANCE CARDS BELOW TO BIND AND MEASURE TOXICITY SYNERGY
+                        </p>
+                    </div>
+                    <button onclick="toggleSectionAudio('toxicology')" id="btn-audio-toxicology" class="px-3 py-1.5 bg-brand-accent text-black rounded font-mono font-bold text-[10px] tracking-wider hover:bg-amber-400 transition-all shrink-0 flex items-center gap-1 shadow-lg">
+                        <span>🔊</span><span id="label-audio-toxicology">PLAY AUDIO TOXICITY BRIEFING</span>
+                    </button>
+                </div>
+
+                <!-- Interactive Chemical Binder Interface -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0 font-mono" id="chemistry-selector-row">
+                    <!-- Cocaine Element -->
+                    <div onclick="toggleChemical('cocaine')" id="chem-card-cocaine" class="p-3 rounded-xl border border-white/[0.05] bg-slate-950/45 cursor-pointer hover:border-brand-danger/40 transition-all select-none">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[9px] text-slate-500 font-bold uppercase">STIMULANT</span>
+                            <span id="chem-badge-cocaine" class="w-2.5 h-2.5 rounded-full bg-slate-800"></span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Cocaine</h3>
+                    </div>
+
+                    <!-- Ketamine Element -->
+                    <div onclick="toggleChemical('ketamine')" id="chem-card-ketamine" class="p-3 rounded-xl border border-white/[0.05] bg-slate-950/45 cursor-pointer hover:border-brand-accent/40 transition-all select-none">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[9px] text-slate-500 font-bold uppercase">DISSOCIATIVE</span>
+                            <span id="chem-badge-ketamine" class="w-2.5 h-2.5 rounded-full bg-slate-800"></span>
+                        </div>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Ketamine</h3>
+                    </div>
+
+                    <!-- Alcohol Element -->
+                    <div onclick="toggleChemical('alcohol')" id="chem-card-alcohol" class="p-3 rounded-xl border border-white/[0.05] bg-slate-950/45 cursor-pointer hover:border-brand-info/40 transition-all select-none">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[9px] text-slate-500 font-bold uppercase">DEPRESSANT</span>
+                            <span id="chem-badge-alcohol" class="w-2.5 h-2.5 rounded-full bg-slate-800"></span>
+                        </div>
+                        <h3 class="text-sm font-black text-white uppercase tracking-wider">Alcohol</h3>
+                    </div>
+                </div>
+
+                <!-- Synergy Live Diagnostic Console -->
+                <div class="bg-slate-950/90 p-4 rounded-xl border border-white/[0.05] flex-grow flex flex-col justify-center min-h-[120px] shrink-0">
+                    <div class="flex items-center gap-2 border-b border-white/[0.05] pb-2 mb-3 font-mono">
+                        <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                        <span class="text-[10px] text-brand-accent font-bold tracking-widest uppercase">CO-PRESENCE BEHAVIORAL PROJECTION MATRIX</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2 space-y-1">
+                            <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-mono">Clinical Diagnostics</span>
+                            <p id="synergy-diagnostic-text" class="text-xs text-slate-300 leading-relaxed font-sans">
+                                Select and toggle chemical substances from the cards above to simulate how the interactive mix affected her behavioral instability.
+                            </p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-white/[0.04] text-center flex flex-col justify-center font-mono">
+                            <span class="text-[9px] text-slate-400 uppercase tracking-widest block">Combined Threat Level</span>
+                            <span id="synergy-level-text" class="text-base font-black text-brand-success uppercase mt-0.5">STABLE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: COURT RULING & VERDICT -->
             <div id="tab-ruling" class="tab-content hidden space-y-5">
                 <div class="border-b border-white/[0.05] pb-3 shrink-0 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div>
@@ -499,7 +583,7 @@
            Frank: You can directly customize any speech string below!
            ========================================================================= */
         const AUDIO_SCRIPTS = {
-            overview: "Acoustic link established. Voice briefing initiated. This interactive web interface was generated with AI by Frank Heine. Audio Briefing for State of Illinois versus Caitlynn J. Girkin, Case Number twenty-six C F ten ninety-nine. On March tenth, twenty-twenty-six, the defendant, an off-duty Creve Coeur police officer, shot and killed her roommate, Adolfo Cazares, with her service weapon. Over subsequent investigations by the Illinois State Police, the defendant changed her statement four times, moving from suicide to an accidental struggle, and finally to self-defense against an advance. According to Snapchat records, her custody of the weapon prior to the incident was established. At her detention hearing, Judge Chris Doscotch ordered the defendant detained without bond following evidence regarding active adult probation and driving records. Select any tab on the navigation console to inspect specific evidence files.",
+            overview: "Acoustic link established. Voice briefing initiated. This interactive web interface was generated with AI by Frank Heine. Audio Briefing for State of Illinois versus Caitlynn J. Girkin, Case Number twenty-six C F ten ninety-nine. On March tenth, twenty-twenty-six, the defendant, an off-duty Creve Coeur police officer, shot and killed her roommate, Adolfo Cazares, with her service weapon. Over subsequent investigations by the Illinois State Police, the defendant changed her statement four times, moving from suicide to an accidental struggle, and finally to self-defense against an advance. According to Snapchat records, her custody of the weapon prior to the incident was established. At her detention hearing, Judge Chris Doscotch ordered the defendant detained without bond following evidence regarding drug use, active adult probation, and driving records. Select any tab on the navigation console to inspect specific evidence files.",
             
             story: function(idx, title, def, pros) {
                 return `Narrative Phase ${idx}: ${title}. Defendant declaration: ${def}. Prosecution forensic response: ${pros}`;
@@ -507,6 +591,10 @@
 
             timeline: function(step, title, text) {
                 return `Timeline Event ${step}: ${title}. ${text}`;
+            },
+
+            toxicology: function(summary) {
+                return `Toxicology analysis update: ${summary}`;
             },
 
             misconduct: "Police Misconduct File: Comprehensive overview of the defendant's 2024 DUI arrest, suspended driver's license status, unpermitted operation of official police patrol cruisers, and active adult probation violations.",
@@ -579,6 +667,7 @@
             const headerLabel = document.getElementById('header-audio-btn-label');
             const storyLabel = document.getElementById('label-audio-story');
             const misconductLabel = document.getElementById('label-audio-misconduct');
+            const toxLabel = document.getElementById('label-audio-toxicology');
             const rulingLabel = document.getElementById('label-audio-ruling');
 
             if (!isPlaying) {
@@ -586,12 +675,14 @@
                 if (headerLabel) headerLabel.textContent = "LISTEN TO OVERVIEW";
                 if (storyLabel) storyLabel.textContent = "LISTEN TO THIS NARRATIVE";
                 if (misconductLabel) misconductLabel.textContent = "LISTEN TO MISCONDUCT AUDIO";
+                if (toxLabel) toxLabel.textContent = "PLAY AUDIO TOXICITY BRIEFING";
                 if (rulingLabel) rulingLabel.textContent = "LISTEN TO RULING AUDIO";
             } else {
                 if (masterText) masterText.textContent = "STOP AUDIO";
                 if (headerLabel) headerLabel.textContent = "STOP OVERVIEW";
                 if (storyLabel) storyLabel.textContent = activeKey === 'story' ? "STOP NARRATIVE AUDIO" : "LISTEN TO THIS NARRATIVE";
                 if (misconductLabel) misconductLabel.textContent = activeKey === 'misconduct' ? "STOP MISCONDUCT AUDIO" : "LISTEN TO MISCONDUCT AUDIO";
+                if (toxLabel) toxLabel.textContent = activeKey === 'toxicology' ? "STOP TOXICITY AUDIO" : "PLAY AUDIO TOXICITY BRIEFING";
                 if (rulingLabel) rulingLabel.textContent = activeKey === 'ruling' ? "STOP RULING AUDIO" : "LISTEN TO RULING AUDIO";
             }
         }
@@ -650,6 +741,8 @@
                 triggerCurrentStoryAudio();
             } else if (sectionKey === 'misconduct') {
                 speakNarrative(AUDIO_SCRIPTS.misconduct, 'misconduct');
+            } else if (sectionKey === 'toxicology') {
+                triggerToxAudioCurrent();
             } else if (sectionKey === 'ruling') {
                 speakNarrative(AUDIO_SCRIPTS.ruling, 'ruling');
             }
@@ -702,11 +795,13 @@
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => {
                 content.classList.add('hidden');
+                content.classList.remove('flex');
             });
             
             const target = document.getElementById(tabId);
-            if (target) {
-                target.classList.remove('hidden');
+            target.classList.remove('hidden');
+            if(tabId === 'tab-substance') {
+                target.classList.add('flex');
             }
 
             const buttons = document.querySelectorAll('.tab-btn');
@@ -716,10 +811,8 @@
             });
 
             const activeBtn = document.getElementById('btn-' + tabId);
-            if (activeBtn) {
-                activeBtn.className = "tab-btn w-[38vw] min-w-[135px] max-w-[160px] lg:w-full shrink-0 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-2 bg-brand-accent text-slate-950 font-mono tracking-wider shadow-lg shadow-brand-accent/15";
-                activeBtn.querySelector('.w-1.5').className = "w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping";
-            }
+            activeBtn.className = "tab-btn w-[38vw] min-w-[135px] max-w-[160px] lg:w-full shrink-0 px-3 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 text-left whitespace-nowrap flex items-center gap-2 bg-brand-accent text-slate-950 font-mono tracking-wider shadow-lg shadow-brand-accent/15";
+            activeBtn.querySelector('.w-1.5').className = "w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping";
             
             // If switched tabs, cancel timeline playbacks
             if (tabId !== 'tab-timeline' && timelineInterval) {
@@ -829,6 +922,67 @@
             }
         }
 
+
+        /* TAB 4: INTERACTIVE TOXICOLOGY ENGINE */
+        const activeChemicals = { cocaine: false, ketamine: false, alcohol: false };
+
+        function toggleChemical(key) {
+            activeChemicals[key] = !activeChemicals[key];
+            playBeep(activeChemicals[key] ? 520 : 260, 0.08, 'triangle');
+            
+            const card = document.getElementById(`chem-card-${key}`);
+            const badge = document.getElementById(`chem-badge-${key}`);
+            
+            if (activeChemicals[key]) {
+                card.classList.add('border-brand-accent', 'bg-brand-accent/10');
+                badge.className = "w-2.5 h-2.5 rounded-full bg-brand-accent animate-pulse";
+            } else {
+                card.classList.remove('border-brand-accent', 'bg-brand-accent/10');
+                badge.className = "w-2.5 h-2.5 rounded-full bg-slate-800";
+            }
+            evaluateSynergy();
+        }
+
+        let lastSynergySummary = "";
+
+        function triggerToxAudioCurrent() {
+            if (lastSynergySummary) {
+                speakNarrative(AUDIO_SCRIPTS.toxicology(lastSynergySummary), 'toxicology');
+            } else {
+                speakNarrative("Please select from the available options to evaluate the combined toxicity threat level.", 'toxicology');
+            }
+        }
+
+        function evaluateSynergy() {
+            let count = Object.values(activeChemicals).filter(Boolean).length;
+            const txt = document.getElementById('synergy-diagnostic-text');
+            const lvl = document.getElementById('synergy-level-text');
+            let voc = "";
+
+            if(count === 0) {
+                txt.textContent = "Select chemical substances above to simulate how the interactive mix affected her behavioral instability.";
+                lvl.textContent = "STABLE"; lvl.className = "text-base font-black text-brand-success uppercase mt-0.5";
+                voc = "No active compounds selected. Behavioral projection parameters at baseline.";
+            } else if (count === 1) {
+                if(activeChemicals.cocaine) { txt.textContent = "Intense physical response, racing thoughts, highly volatile anxiety."; lvl.textContent="VOLATILE"; lvl.className="text-base font-black text-brand-accent uppercase mt-0.5"; voc="Cocaine selected. Cardiac rate spiked, hyper-vigilance active."; }
+                else if(activeChemicals.ketamine) { txt.textContent = "Anesthetic disconnect. Altered sense of time and severe spatial disorientation."; lvl.textContent="UNSTABLE"; lvl.className="text-base font-black text-brand-accent uppercase mt-0.5"; voc="Ketamine selected. Dissociative disconnect from reality established."; }
+                else { txt.textContent = "Depressed pre-frontal restraint, leading to reckless impulse."; lvl.textContent="IMPAIRED"; lvl.className="text-base font-black text-brand-info uppercase mt-0.5"; voc="Alcohol selected. Pre-frontal cortex restraint disinhibited."; }
+            } else if (count === 2) {
+                if(!activeChemicals.alcohol) { txt.textContent = "Unpredictable combination potentially altering one's sense of reality and is conducive to erratic behavior."; voc="Stimulant and Dissociative mix active. Unpredictable combination potentially altering one's sense of reality and is conducive to erratic behavior."; }
+                else if(!activeChemicals.ketamine) { txt.textContent = "Amplified physical confidence with severely broken motor-response inhibitors. Promotes hyper-aggressive confrontations."; voc="Cocaine and alcohol speedball synergy active. Aggression pathways amplified."; }
+                else { txt.textContent = "Cognitive disorientation and altered sense of reality with broken self-preservation parameters."; voc="Dissociative depressant combination. Cognitive disorientation and altered sense of reality."; }
+                lvl.textContent = "HIGH THREAT"; lvl.className = "text-base font-black text-brand-danger uppercase mt-0.5 animate-pulse";
+            } else {
+                txt.textContent = "Maximum threat matrix. Manic aggressive outbursts, self-harm gestures, potential to cause total loss of executive behavioral control.";
+                lvl.textContent = "CRITICAL LIMIT"; lvl.className = "text-base font-black text-brand-danger uppercase mt-0.5 animate-pulse";
+                voc = "Alert. Poly-substance critical synergy. Potential to cause total loss of executive behavioral control.";
+            }
+            lastSynergySummary = voc;
+            if (isAudioInitialized && window.speechSynthesis && window.speechSynthesis.speaking) {
+                speakNarrative(AUDIO_SCRIPTS.toxicology(voc), 'toxicology');
+            }
+        }
+
         /* -------------------------------------------------------------
            PURE WebGL 1.0 SECURE DYNAMIC WAVE PROJECTION PIPELINE
            With real-time compilation checking & on-screen diagnostic reporting.
@@ -881,7 +1035,7 @@
                 }
             `;
 
-            // Dynamic Domain-Warping Caustic Wave Shader
+            // Dynamic Domain-Warping Caustic Wave Shader with High Visual Impact ("Wow Factor")
             const fsSource = `
                 precision mediump float;
                 uniform vec2 u_resolution;
@@ -1004,3 +1158,4 @@
 </body>
 </html>
 
+```
